@@ -21,7 +21,7 @@ import java.net.InetSocketAddress;
 @Component
 public class NettyServer {
 
-    static Logger logger = LoggerFactory.getLogger(NettyServer.class);
+    private static Logger logger = LoggerFactory.getLogger(NettyServer.class);
 
     @Autowired
     @Qualifier("tcpBootstrap")
@@ -42,6 +42,7 @@ public class NettyServer {
     private Channel tcpChannel;
     private Channel httpChannel;
 
+
     public void start() throws Exception{
         tcpChannel = tcpBootstrap.bind(tcpPort).sync().channel();
         httpChannel = httpBootstrap.bind(httpPort).sync().channel();
@@ -57,6 +58,8 @@ public class NettyServer {
         httpChannel.close();
         httpChannel.parent().close();
     }
+
+
 
     public ServerBootstrap getTcpBootstrap() {
         return tcpBootstrap;

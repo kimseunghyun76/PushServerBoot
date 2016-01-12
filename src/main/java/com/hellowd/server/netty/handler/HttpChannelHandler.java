@@ -1,7 +1,6 @@
 package com.hellowd.server.netty.handler;
 
 import com.google.gson.JsonObject;
-import com.hellowd.server.api.repository.StoreOwnerRepository;
 import com.hellowd.server.netty.http.RestApiRequest;
 import com.hellowd.server.netty.http.ServiceDispatcher;
 import io.netty.buffer.Unpooled;
@@ -12,16 +11,13 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION;
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
-import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
@@ -38,7 +34,8 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 @ChannelHandler.Sharable
 public class HttpChannelHandler extends ChannelInboundHandlerAdapter {
 
-    private static Logger logger = Logger.getLogger(HttpChannelHandler.class.getName());
+    private static Logger logger = Logger.getLogger(HttpChannelHandler.class);
+
 
     private HttpRequest request;
 

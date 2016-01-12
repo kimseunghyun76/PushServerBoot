@@ -25,7 +25,6 @@ import java.util.Date;
 @Qualifier("tcpChannelHandler")
 @ChannelHandler.Sharable
 public class TcpChannelHandler extends ChannelInboundHandlerAdapter {
-    private static Logger logger = Logger.getLogger(HttpChannelHandler.class.getName());
 
     @Autowired
     private ServerMonitor serverMonitor;
@@ -36,7 +35,7 @@ public class TcpChannelHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        logger.info("welcome to this server, your info  "+ InetAddress.getLocalHost().getHostName().toString() );
+       // logger.info("welcome to this server, your info  "+ InetAddress.getLocalHost().getHostName().toString() );
         ctx.write("welcome to this server (" + ctx.channel().remoteAddress().toString() + ")\r\n");
         ctx.write("it's " + new Date() + "\r\n");
         ctx.flush();

@@ -2,6 +2,7 @@ package com.hellowd.server;
 
 import com.hellowd.server.netty.HttpChannelInitializer;
 import com.hellowd.server.netty.TcpChannelInitializer;
+import com.hellowd.server.zookeeper.ZookeeperServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -10,6 +11,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.apache.zookeeper.AsyncCallback;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooKeeper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.*;
+import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +34,7 @@ import java.util.Set;
 @SpringBootApplication
 @ComponentScan(basePackages = "com.hellowd.server")
 @PropertySource(value="classpath:/properties/local/netty.properties")
-public class HelloworldInfraCidPushServerBootApplication {
+public class HelloworldInfraCidPushServerBootApplication  {
 
 	static Logger logger = LoggerFactory.getLogger(HelloworldInfraCidPushServerBootApplication.class);
 
@@ -165,9 +171,30 @@ public class HelloworldInfraCidPushServerBootApplication {
 		}
 		return tcpBootstrap;
 	}
+	@Bean(name="zookeeperHostPort")
+	public String getZookeeperHostPort(){
+		return zkHostPort;
+	}
+
+	@Bean(name="zookeeperSessionTimeout")
+	public int getZookeeperSessionTimeout(){
+		return zkSessionTimeout;
+	}
+
+	@Bean(name="zookeeperZnode")
+	public String getZookeeperZnode(){
+		return zkZnode;
+	}
+
+	@Bean(name="zookeeperZnodeData")
+	public String getZookeeperZnodeData(){
+		return zkZnodeData;
+	}
+
 
 	public static void main(String[] args) throws Exception {
 		ConfigurableApplicationContext ctx =  SpringApplication.run(HelloworldInfraCidPushServerBootApplication.class, args);
+		ctx.getBean(ZookeeperServer.class).start();
 		ctx.getBean(NettyServer.class).start();
 	}
 }
